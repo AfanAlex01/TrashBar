@@ -1,68 +1,78 @@
 import os, json, platform, shutil
 
-class GetTrash:
+class GetTrash():
 
-    def detect_os():
+    def __init__(self):
 
-        if platform.system() == 'Windows':
-            path = r"C:\$Recycle.Bin"
-
-        elif platform.system() == 'Linux':
-            path = "~/.local/share/Trash"
-
-        else:
-            #trow error
-            print("error")
-
-
-        #safe json
         with open('resourses/data.json', 'r') as file:
             data = json.load(file)
-
-        data['settings']['path'] = path
         
+        self.total = 0
+
+        self.path = data['settings']['path']
+        self.limit = data['settings']['limit']
+
+
+    def update(self):
+
+        if self.path == "":
+            self.deafult_path()
+        if self.limit <= 0:
+            self.deafult_limit()
+
+        self.trash_size()
+
+        total = self.total
+        path = self.path
+        limit = self.limit
+
+        data = {
+            "size": total,
+            "settings": {
+                "path": path,
+                "limit": limit
+            }
+        }
+
         with open('resourses/data.json', 'w') as file:
             json.dump(data, file, indent=2)
-    
 
 
-    def get_5pr_ofdisk():
+    def trash_size(self):
 
-        size5 = shutil.disk_usage("/").total * 0.05
-
-        #safe json
-        with open('resourses/data.json', 'r') as file:
-            data = json.load(file)
-
-        data['settings']['limit'] = int(size5 / (1024 ** 2)) #to mb
-        
-        with open('resourses/data.json', 'w') as file:
-            json.dump(data, file, indent=2)
-    
-
-
-    def get_trash_size():
-
-        with open('resourses/data.json', 'r') as file:
-            data = json.load(file)
-
-        total = 0
-
-        for root, _, files in os.walk(data['settings']['path']):
+        for root, _, files in os.walk(self.path):
             for file in files:
                 if file.startswith("$R"):
 
                     file_path = os.path.join(root, file)
                     file_size = os.path.getsize(file_path)
 
-                    total += file_size
-                    
+                    self.total += file_size
 
-        #safe json
-        data['size'] = int(total / (1024 ** 2)) #to mb
-        
-        with open('resourses/data.json', 'w') as file:
-            json.dump(data, file, indent=2)
+        self.total = int(self.total / (1024 ** 2)) #to mb
+
+        print('get_trash_size ', self.total)
 
 
-gettrash = GetTrash()
+    def deafult_path(self):
+
+        if platform.system() == 'Windows':
+            self.path = r"C:\$Recycle.Bin"
+
+        elif platform.system() == 'Linux':
+            self.path = "~/.local/share/Trash"
+
+        else:
+            #trow error
+            print("error")
+
+        print("detect_os ", self.path)
+
+
+    def deafult_limit(self):
+
+        self.limit = shutil.disk_usage("/").total * 0.05
+
+        self.limit = int(self.limit / (1024 ** 2)) #to mb
+
+        print("get_5pr_ofdisk ", self.limit)

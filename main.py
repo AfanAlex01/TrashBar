@@ -1,8 +1,10 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton, QProgressBar
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QProgressBar
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 
 from send2trash import send2trash
+
+from resourses.scripts._getdata import GetTrash
 
 import sys, json, os
 
@@ -14,6 +16,7 @@ class TrashWidget(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAcceptDrops(True)
 
+        self.gettrash = GetTrash()
         self.p0sition = None
 
         self.progressbar = QProgressBar(self)
@@ -37,6 +40,8 @@ class TrashWidget(QWidget):
 
     #apply
     def set_update(self):
+
+        self.gettrash.update
 
         with open('resourses/data.json', 'r') as file:
 
@@ -88,19 +93,8 @@ class TrashWidget(QWidget):
             send2trash(os.path.abspath(url.toLocalFile()))
 
         self.label.setPixmap(self.pixmap1.scaled(170, 200))
-        self.set_update
+        self.set_update()
         
-
-        
-
-
-
-
-        
-
-        
-
-
 
 
 
