@@ -117,12 +117,6 @@ class TrashWidget(QWidget):
                 subprocess.Popen([sys.executable, 'resourses/scripts/settings_window.py'])
             case self.act_exit:
                 sys.exit()
-            
-
-        # if
-        # elif act == act_exit:
-        #     sys.exit()
-
 
 
 
