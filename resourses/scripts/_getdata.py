@@ -13,7 +13,9 @@ class GetTrash():
         self.limit = data['settings']['limit']
 
 
-    def update(self):
+    def get_update(self):
+
+        print("get_update")
 
         if self.path == "":
             self.deafult_path()
@@ -22,15 +24,11 @@ class GetTrash():
 
         self.trash_size()
 
-        total = self.total
-        path = self.path
-        limit = self.limit
-
         data = {
-            "size": total,
+            "size": self.total,
             "settings": {
-                "path": path,
-                "limit": limit
+                "path": self.path,
+                "limit": self.limit
             }
         }
 

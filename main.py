@@ -1,29 +1,29 @@
-from PySide6.QtWidgets import QApplication, QWidget, QLabel, QProgressBar
-from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QProgressBar, QMenu
+from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import Qt
 
 from send2trash import send2trash
 
 from resourses.scripts._getdata import GetTrash
 
-import sys, json, os
+import sys, json, os, subprocess
 
 class TrashWidget(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowFlag(Qt.WindowStaysOnTopHint, True)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAcceptDrops(True)
 
-        self.gettrash = GetTrash()
         self.p0sition = None
+        self.gettrash = GetTrash()
 
         self.progressbar = QProgressBar(self)
-        self.progressbar.setGeometry(9, 20, 150, 140)
+        self.progressbar.setGeometry(7, 19, 67, 52)
         self.progressbar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progressbar.setOrientation(Qt.Vertical)
-        # self.progressbar.setValue(50)
 
         self.pixmap1 = QPixmap("resourses/images/Trash(1).png")
         self.pixmap1.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
@@ -32,7 +32,7 @@ class TrashWidget(QWidget):
 
         self.label = QLabel(self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setPixmap(self.pixmap1.scaled(170, 200))
+        self.label.setPixmap(self.pixmap1.scaled(80, 90))
 
         self.set_update()
         
@@ -41,7 +41,9 @@ class TrashWidget(QWidget):
     #apply
     def set_update(self):
 
-        self.gettrash.update
+        self.gettrash.get_update()
+
+        print("set_update")
 
         with open('resourses/data.json', 'r') as file:
 
@@ -76,14 +78,14 @@ class TrashWidget(QWidget):
     #upload file
     def dragEnterEvent(self, event):
 
-        self.label.setPixmap(self.pixmap2.scaled(170, 200))
+        self.label.setPixmap(self.pixmap2.scaled(80, 90))
         
         event.acceptProposedAction()
         
 
     def dragLeaveEvent(self, event):
         
-        self.label.setPixmap(self.pixmap1.scaled(170, 200))
+        self.label.setPixmap(self.pixmap1.scaled(80, 90))
 
     def dropEvent(self, event):
 
@@ -92,9 +94,34 @@ class TrashWidget(QWidget):
         for url in mime_data.urls():
             send2trash(os.path.abspath(url.toLocalFile()))
 
-        self.label.setPixmap(self.pixmap1.scaled(170, 200))
+        self.label.setPixmap(self.pixmap1.scaled(80, 90))
         self.set_update()
-        
+
+
+
+    #menu
+    def contextMenuEvent(self, event):
+        menu = QMenu()
+
+        self.act_update = menu.addAction(QIcon("resourses/images/ico-update.png"), "Update")
+        self.act_settings = menu.addAction(QIcon("resourses/images/ico-settings.png"), "Settings")
+        self.act_exit = menu.addAction(QIcon("resourses/images/ico-exit.png"), "Exit")
+
+        act = menu.exec(event.globalPos())
+
+
+        match act:
+            case self.act_update:
+                self.set_update()
+            case self.act_settings:
+                subprocess.Popen([sys.executable, 'resourses/scripts/settings_window.py'])
+            case self.act_exit:
+                sys.exit()
+            
+
+        # if
+        # elif act == act_exit:
+        #     sys.exit()
 
 
 
