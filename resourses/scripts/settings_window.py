@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QApplication, QDialog
 
 from screens.settingswindow_ui import Ui_Dialog
 
-import sys
+import sys, json
 
 class SettingsWindow(QDialog):
     def __init__(self, parent=None):
@@ -12,7 +12,11 @@ class SettingsWindow(QDialog):
         self.ui.setupUi(self)
 
         self.setWindowTitle("Settings")
-        self.setFixedSize(300, 120) #i forgot to lock size in designer
+
+        with open('resourses/data.json', 'r') as file:
+            data = json.load(file)
+
+        
 
 
 

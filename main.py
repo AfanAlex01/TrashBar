@@ -4,7 +4,8 @@ from PySide6.QtCore import Qt
 
 from send2trash import send2trash
 
-from resourses.scripts._getdata import GetTrash
+from resourses.scripts._setjson import set_json
+
 
 import sys, json, os, subprocess
 
@@ -18,7 +19,6 @@ class TrashWidget(QWidget):
         self.setAcceptDrops(True)
 
         self.p0sition = None
-        self.gettrash = GetTrash()
 
         self.progressbar = QProgressBar(self)
         self.progressbar.setGeometry(7, 19, 67, 52)
@@ -41,9 +41,9 @@ class TrashWidget(QWidget):
     #apply
     def set_update(self):
 
-        self.gettrash.get_update()
-
         print("set_update")
+
+        set_json()
 
         with open('resourses/data.json', 'r') as file:
 
@@ -81,7 +81,6 @@ class TrashWidget(QWidget):
         self.label.setPixmap(self.pixmap2.scaled(80, 90))
         
         event.acceptProposedAction()
-        
 
     def dragLeaveEvent(self, event):
         
@@ -108,7 +107,6 @@ class TrashWidget(QWidget):
         self.act_exit = menu.addAction(QIcon("resourses/images/ico-exit.png"), "Exit")
 
         act = menu.exec(event.globalPos())
-
 
         match act:
             case self.act_update:

@@ -24,11 +24,13 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(300, 130)
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Dialog.sizePolicy().hasHeightForWidth())
         Dialog.setSizePolicy(sizePolicy)
+        Dialog.setMinimumSize(QSize(300, 130))
+        Dialog.setMaximumSize(QSize(300, 130))
         Dialog.setSizeGripEnabled(False)
         Dialog.setModal(False)
         self.verticalLayout = QVBoxLayout(Dialog)
@@ -41,11 +43,11 @@ class Ui_Dialog(object):
 
         self.horizontalLayout.addWidget(self.label)
 
-        self.lineEdit = QLineEdit(Dialog)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setEnabled(True)
+        self.lineEditPath = QLineEdit(Dialog)
+        self.lineEditPath.setObjectName(u"lineEditPath")
+        self.lineEditPath.setEnabled(True)
 
-        self.horizontalLayout.addWidget(self.lineEdit)
+        self.horizontalLayout.addWidget(self.lineEditPath)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -57,10 +59,10 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_2.addWidget(self.label_3)
 
-        self.lineEdit_2 = QLineEdit(Dialog)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        self.lineEditSize = QLineEdit(Dialog)
+        self.lineEditSize.setObjectName(u"lineEditSize")
 
-        self.horizontalLayout_2.addWidget(self.lineEdit_2)
+        self.horizontalLayout_2.addWidget(self.lineEditSize)
 
         self.label_2 = QLabel(Dialog)
         self.label_2.setObjectName(u"label_2")
