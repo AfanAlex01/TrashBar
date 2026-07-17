@@ -59,10 +59,10 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_2.addWidget(self.label_3)
 
-        self.lineEditSize = QLineEdit(Dialog)
-        self.lineEditSize.setObjectName(u"lineEditSize")
+        self.lineEditLimit = QLineEdit(Dialog)
+        self.lineEditLimit.setObjectName(u"lineEditLimit")
 
-        self.horizontalLayout_2.addWidget(self.lineEditSize)
+        self.horizontalLayout_2.addWidget(self.lineEditLimit)
 
         self.label_2 = QLabel(Dialog)
         self.label_2.setObjectName(u"label_2")

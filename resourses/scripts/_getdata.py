@@ -1,4 +1,4 @@
-import os, json, platform, shutil
+import os, json, platform, shutil, subprocess, sys
 
 class GetTrash():
 
@@ -33,9 +33,11 @@ class GetTrash():
         elif platform.system() == 'Linux':
             path = "~/.local/share/Trash"
 
+        elif platform.system() == 'Darwin':
+            path = '~/.Trash'
+
         else:
-            #trow error
-            print("error")
+            subprocess.Popen([sys.executable, 'resourses/scripts/settings_window.py'])
 
         print("detect_os ", path)
         return path

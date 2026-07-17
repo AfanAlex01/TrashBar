@@ -6,7 +6,6 @@ from send2trash import send2trash
 
 from resourses.scripts._setjson import set_json
 
-
 import sys, json, os, subprocess
 
 class TrashWidget(QWidget):
@@ -18,30 +17,30 @@ class TrashWidget(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAcceptDrops(True)
 
-        self.p0sition = None
-
         self.progressbar = QProgressBar(self)
         self.progressbar.setGeometry(7, 19, 67, 52)
         self.progressbar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progressbar.setOrientation(Qt.Vertical)
 
         self.pixmap1 = QPixmap("resourses/images/Trash(1).png")
-        self.pixmap1.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.pixmap2 = QPixmap("resourses/images/Trash(2).png")
+        self.pixmap1.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.pixmap2.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
 
         self.label = QLabel(self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setPixmap(self.pixmap1.scaled(80, 90))
 
-        self.set_update()
+        self.p0sition = None
+
+        self.setUpdate()
         
 
 
     #apply
-    def set_update(self):
+    def setUpdate(self):
 
-        print("set_update")
+        print("setUpdate")
 
         set_json()
 
@@ -94,7 +93,7 @@ class TrashWidget(QWidget):
             send2trash(os.path.abspath(url.toLocalFile()))
 
         self.label.setPixmap(self.pixmap1.scaled(80, 90))
-        self.set_update()
+        self.setUpdate()
 
 
 
@@ -110,9 +109,15 @@ class TrashWidget(QWidget):
 
         match act:
             case self.act_update:
-                self.set_update()
+                self.setUpdate()
+
             case self.act_settings:
-                subprocess.Popen([sys.executable, 'resourses/scripts/settings_window.py'])
+
+                settings = subprocess.run([sys.executable, 'resourses/scripts/settings_window.py'])
+
+                if settings.returncode == 0:
+                    self.setUpdate()
+
             case self.act_exit:
                 sys.exit()
 

@@ -1,7 +1,7 @@
-from resourses.scripts._getdata import GetTrash
 # from _getdata import GetTrash
+from resourses.scripts._getdata import GetTrash
 
-import os, json, platform, shutil
+import json
 
 def set_json():
 
@@ -30,3 +30,5 @@ def set_json():
         
     with open('resourses/data.json', 'w') as file:
         json.dump(data, file, indent=2)
+
+set_json()
