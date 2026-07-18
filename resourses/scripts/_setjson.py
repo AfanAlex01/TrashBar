@@ -5,7 +5,7 @@ import json
 
 def set_json():
 
-    print("set_json")
+    print("set_json()")
 
     total = GetTrash.trash_size()
         
@@ -30,5 +30,3 @@ def set_json():
         
     with open('resourses/data.json', 'w') as file:
         json.dump(data, file, indent=2)
-
-set_json()

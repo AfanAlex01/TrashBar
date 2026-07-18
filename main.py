@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt
 from send2trash import send2trash
 
 from resourses.scripts._setjson import set_json
+from resourses.scripts._cleancan import clean_trash
 
 import sys, json, os, subprocess
 
@@ -40,7 +41,7 @@ class TrashWidget(QWidget):
     #apply
     def setUpdate(self):
 
-        print("setUpdate")
+        print("setUpdate()")
 
         set_json()
 
@@ -53,6 +54,17 @@ class TrashWidget(QWidget):
 
             if data['size'] >= data['settings']['limit']:
                 self.progressbar.setValue(data['settings']['limit'])
+
+
+    def emptyTrash():
+
+        print("emptyTrash()")
+
+        with open('resourses/data.json', 'r') as file:
+
+            data = json.load(file)
+
+        path = data['settings']['path']
 
 
 
@@ -101,6 +113,8 @@ class TrashWidget(QWidget):
     def contextMenuEvent(self, event):
         menu = QMenu()
 
+        self.act_cleantrash = menu.addAction("Clean")
+
         self.act_update = menu.addAction(QIcon("resourses/images/ico-update.png"), "Update")
         self.act_settings = menu.addAction(QIcon("resourses/images/ico-settings.png"), "Settings")
         self.act_exit = menu.addAction(QIcon("resourses/images/ico-exit.png"), "Exit")
@@ -108,6 +122,10 @@ class TrashWidget(QWidget):
         act = menu.exec(event.globalPos())
 
         match act:
+            case self.act_cleantrash:
+                clean_trash()
+                self.setUpdate()
+
             case self.act_update:
                 self.setUpdate()
 
