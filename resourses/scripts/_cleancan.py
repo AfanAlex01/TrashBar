@@ -8,4 +8,4 @@ def clean_trash():
             subprocess.run(['rm', '-rf', '~/.local/share/Trash/*'])
 
         # elif platform.system() == 'Darwin':
-        #     winshell.recycle_bin().empty(confirm=True, show_progress=False, sound=True)
+        #
