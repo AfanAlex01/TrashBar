@@ -7,5 +7,5 @@ def clean_trash():
         elif platform.system() == 'Linux':
             subprocess.run(['rm', '-rf', '~/.local/share/Trash/*'])
 
-        # elif platform.system() == 'Darwin':
-        #
+        elif platform.system() == 'Darwin':
+            subprocess.run(['rm' '-rf' '~/.Trash/*']) #need to test this

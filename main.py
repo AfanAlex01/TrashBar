@@ -113,7 +113,7 @@ class TrashWidget(QWidget):
     def contextMenuEvent(self, event):
         menu = QMenu()
 
-        self.act_cleantrash = menu.addAction("Clean")
+        self.act_cleantrash = menu.addAction(QIcon("resourses/images/ico-clean.png"), "Clean")
 
         self.act_update = menu.addAction(QIcon("resourses/images/ico-update.png"), "Update")
         self.act_settings = menu.addAction(QIcon("resourses/images/ico-settings.png"), "Settings")

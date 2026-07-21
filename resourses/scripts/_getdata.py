@@ -37,7 +37,7 @@ class GetTrash():
             path = '~/.Trash'
 
         else:
-            subprocess.Popen([sys.executable, 'resourses/scripts/settings_window.py'])
+            subprocess.Popen([sys.executable, 'resourses/scripts/settings_window.py']) #need to test it
 
         print("detect_os ", path)
         return path
