@@ -4,8 +4,11 @@ from PySide6.QtCore import Qt
 
 from send2trash import send2trash
 
-from resourses.scripts._setjson import set_json
-from resourses.scripts._cleancan import clean_trash
+from scripts._setjson import set_json
+from scripts._cleancan import clean_trash
+
+# from scripts.screens.settingswindow_ui import Ui_Dialog
+from scripts.settings_window import SettingsWindow
 
 import sys, json, os, subprocess
 
@@ -23,8 +26,8 @@ class TrashWidget(QWidget):
         self.progressbar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progressbar.setOrientation(Qt.Vertical)
 
-        self.pixmap1 = QPixmap("resourses/images/Trash(1).png")
-        self.pixmap2 = QPixmap("resourses/images/Trash(2).png")
+        self.pixmap1 = QPixmap("images/Trash(1).png")
+        self.pixmap2 = QPixmap("images/Trash(2).png")
         self.pixmap1.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.pixmap2.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
 
@@ -45,7 +48,7 @@ class TrashWidget(QWidget):
 
         set_json()
 
-        with open('resourses/data.json', 'r') as file:
+        with open('data.json', 'r') as file:
 
             data = json.load(file)
 
@@ -60,7 +63,7 @@ class TrashWidget(QWidget):
 
         print("emptyTrash()")
 
-        with open('resourses/data.json', 'r') as file:
+        with open('data.json', 'r') as file:
 
             data = json.load(file)
 
@@ -113,11 +116,11 @@ class TrashWidget(QWidget):
     def contextMenuEvent(self, event):
         menu = QMenu()
 
-        self.act_cleantrash = menu.addAction(QIcon("resourses/images/ico-clean.png"), "Clean")
+        self.act_cleantrash = menu.addAction(QIcon("images/ico-clean.png"), "Clean")
 
-        self.act_update = menu.addAction(QIcon("resourses/images/ico-update.png"), "Update")
-        self.act_settings = menu.addAction(QIcon("resourses/images/ico-settings.png"), "Settings")
-        self.act_exit = menu.addAction(QIcon("resourses/images/ico-exit.png"), "Exit")
+        self.act_update = menu.addAction(QIcon("images/ico-update.png"), "Update")
+        self.act_settings = menu.addAction(QIcon("images/ico-settings.png"), "Settings")
+        self.act_exit = menu.addAction(QIcon("images/ico-exit.png"), "Exit")
 
         act = menu.exec(event.globalPos())
 
@@ -131,13 +134,23 @@ class TrashWidget(QWidget):
 
             case self.act_settings:
 
-                settings = subprocess.run([sys.executable, 'resourses/scripts/settings_window.py'])
+                # settings = subprocess.run([sys.executable, 'scripts/settings_window.py'])
 
-                if settings.returncode == 0:
-                    self.setUpdate()
+                # if settings.returncode == 0:
+                #     self.setUpdate()
+
+                self.openSettings()
 
             case self.act_exit:
                 sys.exit()
+
+
+
+    #settings
+    def openSettings(self):
+        sett = SettingsWindow(self)
+        sett.exec()
+
 
 
 
