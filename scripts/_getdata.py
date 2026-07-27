@@ -19,9 +19,10 @@ class GetTrash():
 
                     total += file_size
 
+        print("trash_size() ", total)
+        
         total = int(total / (1024 ** 2)) #to mb
 
-        print('get_trash_size ', total)
         return total
 
 
@@ -36,10 +37,7 @@ class GetTrash():
         elif platform.system() == 'Darwin':
             path = '~/.Trash'
 
-        # else:
-        #     subprocess.Popen([sys.executable, 'scripts/settings_window.py']) #need to test it
-
-        print("detect_os ", path)
+        print("detect_os() ", path)
         return path
 
 
@@ -47,7 +45,8 @@ class GetTrash():
 
         limit = shutil.disk_usage("/").total * 0.05
 
+        print("get_5pr_ofdisk()  ", limit)
+
         limit = int(limit / (1024 ** 2)) #to mb
 
-        print("get_5pr_ofdisk ", limit)
         return limit

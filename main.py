@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 
 from send2trash import send2trash
 
-from scripts._setjson import set_json
+from scripts._setjson import set_trash
 from scripts._cleancan import clean_trash
 
 # from scripts.screens.settingswindow_ui import Ui_Dialog
@@ -26,8 +26,8 @@ class TrashWidget(QWidget):
         self.progressbar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progressbar.setOrientation(Qt.Vertical)
 
-        self.pixmap1 = QPixmap("images/Trash(1).png")
-        self.pixmap2 = QPixmap("images/Trash(2).png")
+        self.pixmap1 = QPixmap("assets/images/Trash(1).png")
+        self.pixmap2 = QPixmap("assets/images/Trash(2).png")
         self.pixmap1.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.pixmap2.scaled(0, 0, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
 
@@ -37,16 +37,16 @@ class TrashWidget(QWidget):
 
         self.p0sition = None
 
-        self.setUpdate()
+        self.UIUpdate()
         
 
 
-    #apply
-    def setUpdate(self):
+    #update
+    def UIUpdate(self):
 
-        print("setUpdate()")
+        print("UIUpdate(self)")
 
-        set_json()
+        set_trash()
 
         with open('data.json', 'r') as file:
 
@@ -57,18 +57,6 @@ class TrashWidget(QWidget):
 
             if data['size'] >= data['settings']['limit']:
                 self.progressbar.setValue(data['settings']['limit'])
-
-
-    def emptyTrash():
-
-        print("emptyTrash()")
-
-        with open('data.json', 'r') as file:
-
-            data = json.load(file)
-
-        path = data['settings']['path']
-
 
 
     #move
@@ -85,7 +73,6 @@ class TrashWidget(QWidget):
     def mouseReleaseEvent(self, event):
         
         self.p0sition = None
-
 
 
     
@@ -108,7 +95,7 @@ class TrashWidget(QWidget):
             send2trash(os.path.abspath(url.toLocalFile()))
 
         self.label.setPixmap(self.pixmap1.scaled(80, 90))
-        self.setUpdate()
+        self.UIUpdate()
 
 
 
@@ -116,41 +103,33 @@ class TrashWidget(QWidget):
     def contextMenuEvent(self, event):
         menu = QMenu()
 
-        self.act_cleantrash = menu.addAction(QIcon("images/ico-clean.png"), "Clean")
-
-        self.act_update = menu.addAction(QIcon("images/ico-update.png"), "Update")
-        self.act_settings = menu.addAction(QIcon("images/ico-settings.png"), "Settings")
-        self.act_exit = menu.addAction(QIcon("images/ico-exit.png"), "Exit")
+        self.act_update = menu.addAction(QIcon("assets/images/ico-update.png"), "Update")
+        self.act_cleantrash = menu.addAction(QIcon("assets/images/ico-clean.png"), "Clean")
+        self.act_settings = menu.addAction(QIcon("assets/images/ico-settings.png"), "Settings")
+        self.act_exit = menu.addAction(QIcon("assets/images/ico-exit.png"), "Exit")
 
         act = menu.exec(event.globalPos())
 
         match act:
+            case self.act_update:
+                self.UIUpdate()
+
             case self.act_cleantrash:
                 clean_trash()
-                self.setUpdate()
-
-            case self.act_update:
-                self.setUpdate()
+                self.UIUpdate()
 
             case self.act_settings:
-
-                # settings = subprocess.run([sys.executable, 'scripts/settings_window.py'])
-
-                # if settings.returncode == 0:
-                #     self.setUpdate()
-
                 self.openSettings()
 
             case self.act_exit:
                 sys.exit()
 
 
-
     #settings
     def openSettings(self):
         sett = SettingsWindow(self)
         sett.exec()
-
+        self.UIUpdate()
 
 
 
