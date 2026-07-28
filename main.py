@@ -4,13 +4,12 @@ from PySide6.QtCore import Qt
 
 from send2trash import send2trash
 
-from scripts._setjson import set_trash
+from scripts._setini import sset_INI
 from scripts._cleancan import clean_trash
 
-# from scripts.screens.settingswindow_ui import Ui_Dialog
 from scripts.settings_window import SettingsWindow
 
-import sys, json, os, subprocess
+import sys, configparser, os
 
 class TrashWidget(QWidget):
     def __init__(self):
@@ -46,17 +45,29 @@ class TrashWidget(QWidget):
 
         print("UIUpdate(self)")
 
-        set_trash()
+        sset_INI()
 
-        with open('data.json', 'r') as file:
+        config = configparser.ConfigParser()
+        config.read('assets/configdontouch.ini')
 
-            data = json.load(file)
+        self.progressbar.setMaximum(int(config.get('settings', 'limit')))
 
-            self.progressbar.setMaximum(data['settings']['limit'])
-            self.progressbar.setValue(data['size'])
+        if int(config.get('trash', 'trash')) >= int(config.get('settings', 'limit')):
+            self.progressbar.setValue(int(config.get('settings', 'limit')))
 
-            if data['size'] >= data['settings']['limit']:
-                self.progressbar.setValue(data['settings']['limit'])
+        else:
+            self.progressbar.setValue(int(config.get('trash', 'trash')))
+
+
+        # with open('data.json', 'r') as file:
+
+        #     data = json.load(file)
+
+        #     self.progressbar.setMaximum(data['settings']['limit'])
+        #     self.progressbar.setValue(data['size'])
+
+        #     if data['size'] >= data['settings']['limit']:
+        #         self.progressbar.setValue(data['settings']['limit'])
 
 
     #move
@@ -89,9 +100,9 @@ class TrashWidget(QWidget):
 
     def dropEvent(self, event):
 
-        mime_data = event.mimeData()
+        mimedata = event.mimeData()
 
-        for url in mime_data.urls():
+        for url in mimedata.urls():
             send2trash(os.path.abspath(url.toLocalFile()))
 
         self.label.setPixmap(self.pixmap1.scaled(80, 90))
