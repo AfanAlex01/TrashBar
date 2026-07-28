@@ -59,17 +59,6 @@ class TrashWidget(QWidget):
             self.progressbar.setValue(int(config.get('trash', 'trash')))
 
 
-        # with open('data.json', 'r') as file:
-
-        #     data = json.load(file)
-
-        #     self.progressbar.setMaximum(data['settings']['limit'])
-        #     self.progressbar.setValue(data['size'])
-
-        #     if data['size'] >= data['settings']['limit']:
-        #         self.progressbar.setValue(data['settings']['limit'])
-
-
     #move
     def mousePressEvent(self, event):
 

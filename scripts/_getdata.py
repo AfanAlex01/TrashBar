@@ -1,4 +1,4 @@
-import os, json, platform, shutil, subprocess, sys
+import os, configparser, platform, shutil, subprocess, sys
 
 class GetTrash():
 
@@ -6,9 +6,14 @@ class GetTrash():
 
         total = 0
 
-        with open('data.json', 'r') as file:
-            data = json.load(file)
-            path = data['settings']['path']
+        config = configparser.ConfigParser()
+        config.read('assets/configdontouch.ini')
+
+        path = config.get('settings', 'path')
+
+        # with open('data.json', 'r') as file:
+        #     data = json.load(file)
+        #     path = data['settings']['path']
 
         for root, _, files in os.walk(path):
             for file in files:

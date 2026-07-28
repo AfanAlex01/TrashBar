@@ -7,7 +7,7 @@ from scripts.screens.settingswindow_ui import Ui_Dialog
 # from _getdata import GetTrash
 from scripts._getdata import GetTrash
 
-import sys, json
+import configparser
 
 class SettingsWindow(QDialog):
     def __init__(self, parent=None):
@@ -19,32 +19,26 @@ class SettingsWindow(QDialog):
         self.setWindowTitle("Settings")
         self.setWindowFlag(Qt.WindowStaysOnTopHint, True)
 
-        with open('data.json', 'r') as file:
-            self.data = json.load(file)
+        self.config = configparser.ConfigParser()
+        self.config.read('assets/configdontouch.ini')
 
-        self.ui.lineEditPath.setText(self.data['settings']['path'])
-        self.ui.lineEditLimit.setText(str(self.data['settings']['limit']))
+        self.ui.lineEditPath.setText(self.config.get('settings', 'path'))
+        self.ui.lineEditLimit.setText(self.config.get('settings', 'limit'))
 
         self.ui.buttonBox.accepted.connect(self.applySettings)
         self.ui.buttonBox.clicked.connect(self.showDeafults)
 
     
     def applySettings(self):
-        self.data['settings']['path'] = str(self.ui.lineEditPath.text())
-        self.data['settings']['limit'] = int(self.ui.lineEditLimit.text())
 
-        with open('data.json', "w") as file:
-            json.dump(self.data, file, indent=4)
+        self.config.set('settings', 'path', self.ui.lineEditPath.text())
+        self.config.set('settings', 'limit', self.ui.lineEditLimit.text())
 
+        with open('assets/configdontouch.ini', 'w') as configfile:
+            self.config.write(configfile)
+                
 
     def showDeafults(self, button): 
         if self.ui.buttonBox.standardButton(button) == QDialogButtonBox.StandardButton.RestoreDefaults:
             self.ui.lineEditPath.setText(GetTrash.deafult_path())
             self.ui.lineEditLimit.setText(str(GetTrash.deafult_limit()))
-
-    
-
-# app = QApplication(sys.argv)
-# wi = SettingsWindow()
-# wi.show()
-# sys.exit(app.exec())

@@ -16,10 +16,10 @@ def sset_INI():
 
         if config.has_section('settings'):
 
-            if not config.has_option('settings', 'path'):
+            if not config.has_option('settings', 'path') or config.get('settings', 'path') == '':
                 config.set('settings', 'path', GetTrash.deafult_path())
 
-            if not config.has_option('settings', 'limit'):
+            if not config.has_option('settings', 'limit') or int(config.get('settings', 'limit')) <= 0:
                 config.set('settings', 'limit', str(GetTrash.deafult_limit()))
 
         else:
