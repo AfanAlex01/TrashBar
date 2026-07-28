@@ -16,7 +16,6 @@ class TrashWidget(QWidget):
         super().__init__()
 
         self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setWindowFlag(Qt.WindowStaysOnTopHint, True)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAcceptDrops(True)
 
@@ -37,7 +36,11 @@ class TrashWidget(QWidget):
         self.p0sition = None
 
         self.UIUpdate()
-        
+
+
+        # TODO: detect buttons: delete, cntr+z
+        # TODO: deactivate/activate image on update
+        # TODO: add "open trash folder"
 
 
     #update
@@ -46,6 +49,8 @@ class TrashWidget(QWidget):
         print("UIUpdate(self)")
 
         sset_INI()
+
+        self.setWindowFlag(Qt.WindowStaysOnTopHint, True)
 
         config = configparser.ConfigParser()
         config.read('assets/configdontouch.ini')
@@ -102,6 +107,8 @@ class TrashWidget(QWidget):
     #menu
     def contextMenuEvent(self, event):
         menu = QMenu()
+
+        # TODO: add "open trash folder"
 
         self.act_update = menu.addAction(QIcon("assets/images/ico-update.png"), "Update")
         self.act_cleantrash = menu.addAction(QIcon("assets/images/ico-clean.png"), "Clean")
