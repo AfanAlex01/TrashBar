@@ -11,10 +11,6 @@ class GetTrash():
 
         path = config.get('settings', 'path')
 
-        # with open('data.json', 'r') as file:
-        #     data = json.load(file)
-        #     path = data['settings']['path']
-
         for root, _, files in os.walk(path):
             for file in files:
                 if file.startswith("$R"):
