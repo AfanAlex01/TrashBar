@@ -41,9 +41,6 @@ class TrashWidget(QWidget):
         self.UIUpdate()
 
 
-        # TODO: play sound on cleaning trash
-
-
     #update
     def UIUpdate(self):
 
