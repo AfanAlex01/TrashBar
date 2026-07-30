@@ -1,22 +1,24 @@
 import platform, winshell, subprocess, os
 
+        # TODO: play sound on cleaning trash
+
 def clean_trash():
-        if platform.system() == 'Windows':
-            winshell.recycle_bin().empty(confirm=True, show_progress=False, sound=True)
+    if platform.system() == 'Windows':
+        winshell.recycle_bin().empty(confirm=True, show_progress=False, sound=True)
 
-        elif platform.system() == 'Linux':
+    elif platform.system() == 'Linux': # TODO: except error
 
-            if 'KDE' in os.environ.get('XDG_CURRENT_DESKTOP'):
+        if 'KDE' in os.environ.get('XDG_CURRENT_DESKTOP'):
                 subprocess.run(['ktrash6', '--empty'])
 
-            elif 'GNOME' in os.environ.get('XDG_CURRENT_DESKTOP'):
+        elif 'GNOME' in os.environ.get('XDG_CURRENT_DESKTOP'):
                 subprocess.run(['gio', 'trash', '--empty'])
                  
-            else:
+        else:
                 # subprocess.run(['rm', '-rf', '~/.local/share/Trash/files/*'])
                 # subprocess.run(['rm', '-rf', '~/.local/share/Trash/info/*'])
+                subprocess.run(['trash-empty'])
+                # subprocess.run(['rm', '-rf', '~/.local/share/Trash/*'])
 
-                subprocess.run(['rm', '-rf', '~/.local/share/Trash/*'])
-
-        elif platform.system() == 'Darwin':
+    elif platform.system() == 'Darwin':
             subprocess.run(['rm' '-rf' '~/.Trash/*']) #need to test this

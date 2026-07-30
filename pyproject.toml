@@ -10,5 +10,6 @@ dependencies = [
     "pyside6>=6.11.1",
     "pywin32>=312",
     "send2trash>=2.1.0",
+    "trash-cli>=0.24.5.26",
     "winshell>=0.6",
 ]

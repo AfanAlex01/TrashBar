@@ -6,6 +6,7 @@ from send2trash import send2trash
 
 from scripts._setini import sset_INI
 from scripts._cleancan import clean_trash
+from scripts._opencan import open_trash
 
 from scripts.settings_window import SettingsWindow
 
@@ -38,9 +39,7 @@ class TrashWidget(QWidget):
         self.UIUpdate()
 
 
-        # TODO: detect buttons: delete, cntr+z
-        # TODO: deactivate/activate image on update
-        # TODO: add "open trash folder"
+        # TODO: play sound on cleaning trash
 
 
     #update
@@ -79,7 +78,6 @@ class TrashWidget(QWidget):
         
         self.p0sition = None
 
-
     
     #upload file
     def dragEnterEvent(self, event):
@@ -103,17 +101,15 @@ class TrashWidget(QWidget):
         self.UIUpdate()
 
 
-
     #menu
     def contextMenuEvent(self, event):
         menu = QMenu()
 
-        # TODO: add "open trash folder"
-
-        self.act_update = menu.addAction(QIcon("assets/images/ico-update.png"), "Update")
-        self.act_cleantrash = menu.addAction(QIcon("assets/images/ico-clean.png"), "Clean")
-        self.act_settings = menu.addAction(QIcon("assets/images/ico-settings.png"), "Settings")
-        self.act_exit = menu.addAction(QIcon("assets/images/ico-exit.png"), "Exit")
+        self.act_update     = menu.addAction(QIcon("assets/images/ico/ico-update.png"), "Update")
+        self.act_clean      = menu.addAction(QIcon("assets/images/ico/ico-clean.png"), "Clean")
+        self.act_open       = menu.addAction(QIcon("assets/images/ico/ico-open.png"), "Open ")
+        self.act_settings   = menu.addAction(QIcon("assets/images/ico/ico-settings.png"), "Settings")
+        self.act_exit       = menu.addAction(QIcon("assets/images/ico/ico-exit.png"), "Exit")
 
         act = menu.exec(event.globalPos())
 
@@ -121,9 +117,12 @@ class TrashWidget(QWidget):
             case self.act_update:
                 self.UIUpdate()
 
-            case self.act_cleantrash:
+            case self.act_clean:
                 clean_trash()
                 self.UIUpdate()
+
+            case self.act_open:
+                open_trash()
 
             case self.act_settings:
                 self.openSettings()
@@ -137,7 +136,6 @@ class TrashWidget(QWidget):
         sett = SettingsWindow(self)
         sett.exec()
         self.UIUpdate()
- 
 
 
 if __name__ == "__main__":
