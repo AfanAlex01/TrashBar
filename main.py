@@ -137,7 +137,7 @@ class TrashWidget(QWidget):
         sett = SettingsWindow(self)
         sett.exec()
         self.UIUpdate()
-
+ 
 
 
 if __name__ == "__main__":
